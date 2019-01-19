@@ -2,12 +2,19 @@
 
 @section('title', app_name() . ' | ' . __('navs.general.home'))
 
+@section('js')
+<script>
+    $('#modal_submit_address').modal('show');
+</script>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-lg-6">
         <div class="row">
             <h3 class="text-center">Lookup Address Now</h3>
-            <div class="input-group mb-3"><input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
+            <div class="input-group mb-3">
+                <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
                     <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
                         <i class="fas fa-search"></i>
@@ -42,12 +49,35 @@
     <div class="col-lg-6">
         <div class="row offset-lg-1">
             <h3 class="text-center">Submit Address</h3>
-            <div class="input-group mb-3"><input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
+            <div class="input-group mb-3">
+                <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
                     <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
                         Submit
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('modal')
+<div class="modal" tabindex="-1" role="dialog" id="modal_submit_address">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

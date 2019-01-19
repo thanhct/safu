@@ -32,6 +32,7 @@
                 @yield('content')
             </div><!-- container -->
         </div><!-- #app -->
+        @yield('modal')
 
         <!-- Scripts -->
         @stack('before-scripts')
@@ -41,5 +42,6 @@
         @stack('after-scripts')
 
         @include('includes.partials.ga')
+        @yield('js')
     </body>
 </html>
