@@ -7,7 +7,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <strong>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</strong>
+                    <strong>HI SAFU HACKATHON {{ $logged_in_user->name }}!</strong>
                 </div><!--card-header-->
                 <div class="card-body">
                     {!! __('strings.backend.welcome') !!}
