@@ -14,9 +14,9 @@
         <div class="row">
             <h3 class="text-center">Detect Address</h3>
             <div class="input-group mb-3">
-                <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
+                <input type="text" id="detect_address" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
-                    <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
+                    <button type="button" id="button_detect" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
                         <i class="fas fa-search"></i>
                         Detect
                     </button>
@@ -49,17 +49,23 @@
     <div class="col-lg-6">
         <div class="row offset-lg-1">
             <h3 class="text-center">Report Address</h3>
+            @guest
             <div class="input-group mb-3">
-                <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
+                <div class="p-1 bg-warning text-dark">Please login to use this service.</div>
+            </div>
+            @else
+            <div class="input-group mb-3">
+                <input type="text" id="report_address" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
-                    <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
+                    <button type="button" id="button_report" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
                         Report
                     </button>
                 </div>
             </div>
             <div class="input-group mb-3">
-                <textarea class="form-control" rows="5" id="comment" placeholder="Enter your report reason"></textarea>
+                <textarea class="form-control" rows="5" id="report_comment" placeholder="Enter your report reason"></textarea>
             </div>
+            @endguest
         </div>
     </div>
 </div>
