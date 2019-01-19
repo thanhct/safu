@@ -55,13 +55,12 @@ class HomeController extends Controller
                 ->get();
             $score = ($dataScore->count() > 0) ? $dataScore[0]->score : null;
             $date = ($dataScore->count() > 0) ? $dataScore[0]->update_date : null;
-            $hashAddress = ($dataScore->count() > 0) ? $dataScore[0]->hash_address : null;
             $data = Submission::Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
             return response()->json(['status' => 200, 
                 'score' => $score,
-                'address' => $hashAddress,
+                'address' => $request->address,
                 'data' => $data,
                 'updated_date' => $date, 
                 ]);
