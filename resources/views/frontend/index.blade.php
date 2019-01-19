@@ -36,8 +36,8 @@
             contentType: 'application/json',
             success: function (data) {
                 console.log(JSON.stringify(data));
-                $('#lookup_address').val(data.address);
-                $('#address_score').val(data.score);
+                $('#lookup_address').text(data.address);
+                $('#address_score').text(data.score);
             },
             error: function (request, status, error) {
                 debugger
