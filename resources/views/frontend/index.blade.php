@@ -4,7 +4,45 @@
 
 @section('js')
 <script>
-    $('#modal_submit_address').modal('show');
+    // $('#modal_submit_address').modal('show');
+
+    $('#button_report').click(function () {
+        $.ajax({
+            url: "/api/report/submit",
+            type: "POST",
+            data: JSON.stringify({
+                'address': $('#report_address').val(),
+                'report': $('#report_comment').val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#modal_submit_address').modal('show');
+            },
+            error: function (request, status, error) {
+                debugger
+            }
+        });
+    });
+
+    $('#button_detect').click(function () {
+        $.ajax({
+            url: "/api/report/submit",
+            type: "POST",
+            data: JSON.stringify({
+                'address': $('#report_address').val(),
+                'report': $('#report_comment').val()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#modal_submit_address').modal('show');
+            },
+            error: function (request, status, error) {
+                debugger
+            }
+        });
+    });
 </script>
 @endsection
 
@@ -16,7 +54,7 @@
             <div class="input-group mb-3">
                 <input type="text" id="detect_address" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
-                    <button type="button" id="button_detect" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
+                    <button type="button" id="button_detect" class="btn btn-outline-secondary">
                         <i class="fas fa-search"></i>
                         Detect
                     </button>
@@ -44,6 +82,9 @@
                     <p class="mb-0"><i>This address has not been reported</i>. <a href="/reports/create?address=38JZBto35r1upCZ23anoJQMibpdL7EBwaC">File Report</a></p>
                 </div>
             </div>
+            <div class="input-group mt-2 mb-3">
+                <button type="button" class="btn btn-info">View Info</button>
+            </div>
         </div>
     </div>
     <div class="col-lg-6">
@@ -57,7 +98,7 @@
             <div class="input-group mb-3">
                 <input type="text" id="report_address" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
-                    <button type="button" id="button_report" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
+                    <button type="button" id="button_report" class="btn btn-outline-secondary">
                         Report
                     </button>
                 </div>
