@@ -27,16 +27,17 @@
 
     $('#button_detect').click(function () {
         $.ajax({
-            url: "/api/report/submit",
+            url: "/api/getLook",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#report_address').val(),
-                'report': $('#report_comment').val()
+                'address': $('#detect_address').val()
             }),
             dataType: 'json',
             contentType: 'application/json',
             success: function (data) {
-                $('#modal_submit_address').modal('show');
+                console.log(JSON.stringify(data));
+                $('#lookup_address').val(data.address);
+                $('#address_score').val(data.score);
             },
             error: function (request, status, error) {
                 debugger
@@ -67,11 +68,11 @@
                         <tbody>
                             <tr>
                                 <th>Address</th>
-                                <td><i>38JZBto35r1upCZ23anoJQMibpdL7EBwaC</i></td>
+                                <td><i id="lookup_address">38JZBto35r1upCZ23anoJQMibpdL7EBwaC</i></td>
                             </tr>
                             <tr>
                                 <th>Report Count</th>
-                                <td>0</td>
+                                <td id="address_score">0</td>
                             </tr>
                             <tr>
                                 <th>Latest Report</th>
@@ -117,16 +118,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <p>Report Successfully!</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
