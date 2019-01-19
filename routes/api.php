@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Frontend\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,6 @@ use Illuminate\Http\Request;
     return $request->user();
 });*/
 
-Route::get('/test', function (Request $request) {
-    return response()->json(['quy'=>'test']);
-});
+Route::post('/report/submit', [HomeController::class, 'submitAddress']);
+
+Route::get('/getLook', [HomeController::class, 'lookupAddress']);
