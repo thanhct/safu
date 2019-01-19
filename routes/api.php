@@ -20,4 +20,4 @@ use App\Http\Controllers\Frontend\HomeController;
 
 Route::post('/report/submit', [HomeController::class, 'submitAddress']);
 
-Route::get('/getLook', [HomeController::class, 'lookupAddress']);
+Route::post('/getLook', [HomeController::class, 'lookupAddress']);

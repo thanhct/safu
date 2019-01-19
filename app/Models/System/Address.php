@@ -8,6 +8,8 @@ class Address extends Model
 {
 	public $timestamps = false;
 
+	protected  $primaryKey = 'hash_address';
+
     protected $table = 'address';
 
     protected $fillable = ['hash_address', 'score'];

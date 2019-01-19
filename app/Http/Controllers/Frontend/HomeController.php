@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function submitAddress(Request $request){
         if(!empty($request->address)) {
             $hash_address = Address::Where('hash_address', $request->address)->get();
-            if(!$hash_address) {
+            if($hash_address->count() == 0) {
                 Address::create(['hash_address' => $request->address, 'score' => 0]);
             } 
             // else {
@@ -45,10 +45,11 @@ class HomeController extends Controller
      */
     public function lookupAddress(Request $request){
         if(!empty($request->address)) {
-            $score = Address::Select('score')
+            $dataScore = Address::Select('score')
                 ->Where('hash_address', $request->address)
                 ->get();
-            $data = Submission::Where('address', $request->hash_address)
+            $score = ($dataScore->count() > 0) ? $dataScore[0]->score : null;
+            $data = Submission::Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
             return response()->json(['status' => 200, 'score' => $score, 'data' => $data]);
