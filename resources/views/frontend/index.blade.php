@@ -51,7 +51,7 @@
             <h3 class="text-center">Report Address</h3>
             @guest
             <div class="input-group mb-3">
-                <div class="p-1 bg-warning text-dark">Please login to use this service.</div>
+                <div class="p-1 bg-warning text-dark">Please <a href="{{route('frontend.auth.login')}}">login</a> to use this service.</div>
             </div>
             @else
             <div class="input-group mb-3">
