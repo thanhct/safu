@@ -12,13 +12,13 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="row">
-            <h3 class="text-center">Lookup Address Now</h3>
+            <h3 class="text-center">Detect Address</h3>
             <div class="input-group mb-3">
                 <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
                     <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
                         <i class="fas fa-search"></i>
-                        Search
+                        Detect
                     </button>
                 </div>
             </div>
@@ -48,14 +48,17 @@
     </div>
     <div class="col-lg-6">
         <div class="row offset-lg-1">
-            <h3 class="text-center">Submit Address</h3>
+            <h3 class="text-center">Report Address</h3>
             <div class="input-group mb-3">
                 <input type="text" id="home-search" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
                     <button type="button" id="button-addon" onclick="window.goToAddress($('#home-search').val())" class="btn btn-outline-secondary">
-                        Submit
+                        Report
                     </button>
                 </div>
+            </div>
+            <div class="input-group mb-3">
+                <textarea class="form-control" rows="5" id="comment" placeholder="Enter your report reason"></textarea>
             </div>
         </div>
     </div>
