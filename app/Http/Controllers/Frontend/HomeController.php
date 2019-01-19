@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\System\Address;
 use App\Models\System\Submission;
+use App\Models\System\UserRep;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -36,9 +37,21 @@ class HomeController extends Controller
             if($request->approved === 1){
                 $score = Address::find($request->address)->score;            
                 Address::update(['score' => $score + 1,
-                                'updated_date' => date()
+                 ;               'updated_date' => date()
                                 ])
                         ->Where('hash_address', $request->address);
+                $userRep = UserRep::Where('user_id', Auth::id());
+                if($userRep) {
+                    UserRep::update(['reps' => $userRep->reps + 1,
+                                     'balance' => $userRep->balance + 1
+                                    ])
+                                    ->Where('user_id', Auth::id());
+                } else {
+                    UserRep::create(['reps' => 1,
+                                     'balance' => 1,
+                                     'user_id' => Auth::id()
+                                    ])
+                }
             }
             return response()->json(['status' => 201]);
         }
@@ -55,6 +68,7 @@ class HomeController extends Controller
                 ->get();
             $score = ($dataScore->count() > 0) ? $dataScore[0]->score : null;
             $date = ($dataScore->count() > 0) ? $dataScore[0]->update_date : null;
+            $hashddress = ($dataScore->count() > 0) ? $dataScore[0]->hash_address : null;
             $data = Submission::Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
@@ -76,7 +90,7 @@ class HomeController extends Controller
             $submission = Submission::find($request->id);
             if($submission->approved === 0) {
                 $score = Address::find($request->address)->score;            
-                Address::update(['score' => $score + 1
+                Address::update(['score' => $score + 1,
                                 'updated_date' => date()
                                 ])
                         ->Where('hash_address', $request->address);
@@ -86,8 +100,19 @@ class HomeController extends Controller
                                     'appr_date' => date()
                                     ])
                             ->Where('id', $request->id);
-
-                return response()->json(['status' => 200, '']);       
+                $userRep = UserRep::Where('user_id', Auth::id());
+                if($userRep) {
+                    UserRep::update(['reps' => $userRep->reps + 1,
+                                     'balance' => $userRep->balance + 1
+                                    ])
+                                    ->Where('user_id', Auth::id());
+                } else {
+                    UserRep::create(['reps' => 1,
+                                     'balance' => 1,
+                                     'user_id' => Auth::id()
+                                    ])
+                }
+                return response()->json(['status' => 200]);       
             }
             
         }
