@@ -69,7 +69,7 @@ class HomeController extends Controller
                 if($score !== 100) {
                     $this->updateAddress($request->address, $score);
                     $this->updateUserRep($userId);
-                }           
+                }
             }
             return response()->json(['status' => 201]);
         }
@@ -98,11 +98,12 @@ class HomeController extends Controller
                 UserRep::Where('user_id', $userId)
                     ->update(['balance' => $userRep->balance - 0.002
                     ]);
-                // get all of userIds by address 
+                // get all of userIds by address
                 $submisson = Submission::Select('user_id')->Where('address', $request->address)->Where('approved', 1)
                 ->get()->toArray();
-                // calculate bonus score 
-                $scorePush = (0.002*0.8)/count($submisson);
+                // calculate bonus score
+                $platformFee = 0.002;
+                $scorePush = ($platformFee*0.8)/count($submisson);
                 // add bonus for each submission
                 for($i = 0; $i < count($submisson); $i++) {
                     $result = UserRep::where('user_id', $submisson[$i]['user_id'])->first();
@@ -110,22 +111,18 @@ class HomeController extends Controller
                     UserRep::Where('user_id', $submisson[$i]['user_id'])->update(['balance'=>$result->balance+$scorePush]);
                 }
 
-                return response()->json(['status' => 200, 
-                'score' => $score,
-                'address' => $hashddress,
-                'data' => $data,
-                'updated_date' => $date, 
+                return response()->json(['status' => 200,
+                    'score' => $score,
+                    'address' => $hashddress,
+                    'data' => $data,
+                    'updated_date' => $date,
+                    'platform_fees' => $platformFee,
+                    'total_fees' => $userRep->balance - $platformFee
                 ]);
             }
             else {
                 return response()->json(['status' => 400], 400);
             }
-            return response()->json(['status' => 200, 
-                'score' => $score,
-                'address' => $hashddress,
-                'data' => $data,
-                'updated_date' => $date, 
-                ]);
         }
         return response()->json(['status' => 404], 404);
     }
@@ -138,7 +135,7 @@ class HomeController extends Controller
         if(!empty($request->id)) {
             $submission = Submission::find($request->id);
             if($submission->approved === 0) {
-                $score = Address::find($request->address)->score;            
+                $score = Address::find($request->address)->score;
                 if($score !== 100) {
                     Address::update(['score' => $score + 1,
                                 'updated_date' => now()
@@ -152,9 +149,9 @@ class HomeController extends Controller
                                 ->Where('id', $request->id);
                     $this->updateUserRep($userId);
                 }
-                return response()->json(['status' => 200]);       
+                return response()->json(['status' => 200]);
             }
-            
+
         }
         return response()->json(['status' => 404]);
     }

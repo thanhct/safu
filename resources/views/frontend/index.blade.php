@@ -74,7 +74,7 @@
                     var item = response.data[i];
                     html += `
                         <tr>
-                            <th scope="row">${i}</th>
+                            <th scope="row">${i + 1}</th>
                             <td>${item.user.full_name}</td>
                             <td>${item.address}</td>
                         </tr>
@@ -88,9 +88,12 @@
                 $('#table_list_data tbody').html(html);
 
                 $('#lookup_address').text(response.address);
-                $('#address_count').text(response.score);
-                $('#score').text(Math.ceil(Math.min(Math.log(response.score + 1) * 100 / 2.5, 100)));
+                $('#report_count').text(response.data.length);
+                $('#score').text(response.score);
+                //$('#score').text(Math.ceil(Math.min(Math.log(response.score + 1) * 100 / 2.5, 100)));
                 $('#updated_date').text(response.updated_date);
+                $('#platform_fees').text(response.platform_fees);
+                $('#total_fees').text(response.total_fees);
             },
             error: function (request, status, error) {
                 debugger
@@ -131,7 +134,7 @@
                             </tr>
                             <tr>
                                 <th>Report Count</th>
-                                <td id="address_count" style="min-width: 400px;"></td>
+                                <td id="report_count" style="min-width: 400px;"></td>
                             </tr>
                             <tr>
                                 <th>Score</th>
@@ -147,11 +150,11 @@
                             </tr>
                             <tr>
                                 <th>Platform fees</th>
-                                <td id="address_score" style="min-width: 400px;"></td>
+                                <td id="platform_fees" style="min-width: 400px;"></td>
                             </tr>
                             <tr>
                                 <th>Total fees</th>
-                                <td id="address_score" style="min-width: 400px;"></td>
+                                <td id="total_fees" style="min-width: 400px;"></td>
                             </tr>
                         </tbody>
                     </table>
