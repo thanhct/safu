@@ -12,6 +12,11 @@
 
 @section('js')
 <script>
+    var userId = null;
+    $(function () {
+        userId = $('#userId').val();
+    });
+
     $('#detect_address').keyup(function (e) {
         if (e.keyCode == 13) {
             $('#button_detect').trigger("click");
@@ -24,7 +29,8 @@
             type: "POST",
             data: JSON.stringify({
                 'address': $('#report_address').val().trim(),
-                'report': $('#report_comment').val()
+                'report': $('#report_comment').val(),
+                'userId': userId
             }),
             dataType: 'json',
             contentType: 'application/json',
@@ -42,13 +48,13 @@
             url: "/api/getLook",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#detect_address').val().trim()
+                'address': $('#detect_address').val().trim(),
+                'userId': userId
             }),
             dataType: 'json',
             contentType: 'application/json',
             success: function (response) {
                 console.log(response);
-                $('#table_list_data').removeClass('table-hide');
                 var html = '';
                 for (var i = 0; i < response.data.length; i++) {
                     var item = response.data[i];
@@ -59,6 +65,11 @@
                             <td>${item.address}</td>
                         </tr>
                         `;
+                }
+                if (html.length > 0) {
+                    $('#table_list_data').removeClass('table-hide');
+                } else {
+                    $('#table_list_data').addClass('table-hide');
                 }
                 $('#table_list_data tbody').html(html);
 
@@ -79,6 +90,12 @@
     <div class="col-lg-6">
         <div class="row">
             <h3 class="text-center">Detect Address</h3>
+            @guest
+            <div class="input-group mb-3">
+                <div class="p-1 bg-warning text-dark">Please <a href="{{route('frontend.auth.login')}}">login</a> to use this service.</div>
+            </div>
+            @else
+            <input type="hidden" id="userId" name="userId" value="{{ Auth::user()->id }}">
             <div class="input-group mb-3">
                 <input type="text" id="detect_address" placeholder="1L1YwaHKfNGxGx6PGYp6SC6uA14tP9FbXt" aria-describedby="button-addon" class="form-control">
                 <div class="input-group-append">
@@ -122,6 +139,7 @@
                     </tbody>
                 </table>
             </div>
+            @endguest
         </div>
     </div>
     <div class="col-lg-6">
