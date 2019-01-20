@@ -3,6 +3,7 @@
 namespace App\Models\System;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Auth\User;
 
 class Submission extends Model
 {

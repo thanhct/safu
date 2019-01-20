@@ -12,6 +12,7 @@ use App\Models\Auth\Traits\SendUserPasswordReset;
 use App\Models\Auth\Traits\Attribute\UserAttribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
+use App\Models\System\Submission;
 
 /**
  * Class User.
@@ -78,6 +79,6 @@ class User extends Authenticatable
     ];
 
     public function user(){
-        return $this->hasMany(User::class, 'user_id');
+        return $this->hasMany(Submission::class, 'user_id');
     }
 }

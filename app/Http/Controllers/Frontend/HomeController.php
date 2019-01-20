@@ -69,7 +69,7 @@ class HomeController extends Controller
             $score = ($dataScore->count() > 0) ? $dataScore[0]->score : null;
             $date = ($dataScore->count() > 0) ? $dataScore[0]->update_date : null;
             $hashddress = ($dataScore->count() > 0) ? $dataScore[0]->hash_address : null;
-            $data = Submission::with('user:id,frist_name,last_name')->Where('address', $request->address)
+            $data = Submission::with('user:id,first_name,last_name')->Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
             dd($data);
