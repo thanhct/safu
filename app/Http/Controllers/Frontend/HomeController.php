@@ -110,14 +110,14 @@ class HomeController extends Controller
                     if ($result)
                     UserRep::Where('user_id', $submisson[$i]['user_id'])->update(['balance'=>$result->balance+$scorePush]);
                 }
-
+                $userRep = UserRep::Where('user_id', $userId)->first();
                 return response()->json(['status' => 200,
                     'score' => $score,
                     'address' => $hashddress,
                     'data' => $data,
                     'updated_date' => $date,
                     'platform_fees' => $platformFee,
-                    'total_fees' => $userRep->balance - $platformFee
+                    'total_fees' => $userRep->balance
                 ]);
             }
             else {
