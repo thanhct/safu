@@ -25,23 +25,49 @@ class HomeController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
+
+    public function updateAddress($address, $score)
+    {
+        Address::Where('hash_address', $address)
+                ->update(['score' => $score + 1,
+                        'updated_date' => now()
+                        ]);
+    }
+
+    public function updateUserRep($userId)
+    {
+        $userRep = UserRep::Where('user_id', $userId);
+        if($userRep) {
+            UserRep::update(['reps' => $userRep->reps + 1,
+                             'balance' => $userRep->balance + 1
+                            ])
+                            ->Where('user_id', $userId);
+        } else {
+            UserRep::create(['reps' => 1,
+                             'balance' => 1,
+                             'user_id' => $userId
+                            ]);
+        }
+    }
+
     public function submitAddress(Request $request){
         $userId = $request->userId;
         if(!empty($request->address) && !empty($userId)) {
             $hash_address = Address::Where('hash_address', $request->address)->get();
+            $score = Address::find($request->address)->score;
             if($hash_address->count() === 0) {
                 Address::create(['hash_address' => $request->address, 'score' => 0]);
+            } else {
+                if($score !== 100) {
+                    $this->updateAddress($request->address, $score);
+                }
             }
             $data = $request->all();
             $data['user_id'] = $userId;
             Submission::create($data);
             if($request->approved === 1){
-                $score = Address::find($request->address)->score;
                 if($score !== 100) {
-                    Address::update(['score' => $score + 1,
-                                'updated_date' => date()
-                                ])
-                        ->Where('hash_address', $request->address);
+                    $this->updateAddress($request->address, $score);
                     $this->updateUserRep($userId);
                 }           
             }
@@ -101,21 +127,5 @@ class HomeController extends Controller
             
         }
         return response()->json(['status' => 404]);
-    }
-
-    public function updateUserRep($userId)
-    {
-        $userRep = UserRep::Where('user_id', $userId);
-        if($userRep) {
-            UserRep::update(['reps' => $userRep->reps + 1,
-                             'balance' => $userRep->balance + 1
-                            ])
-                            ->Where('user_id', $userId);
-        } else {
-            UserRep::create(['reps' => 1,
-                             'balance' => 1,
-                             'user_id' => $userId
-                            ]);
-        }
     }
 }
