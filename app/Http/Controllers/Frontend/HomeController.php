@@ -81,15 +81,43 @@ class HomeController extends Controller
      */
     public function lookupAddress(Request $request){
         if(!empty($request->address)) {
+            $userId = $request->userId;
             $dataScore = Address::Select('score', 'updated_date', 'hash_address')
                 ->Where('hash_address', $request->address)
                 ->get();
             $score = ($dataScore->count() > 0) ? $dataScore[0]->score : null;
-            $date = ($dataScore->count() > 0) ? $dataScore[0]->update_date : null;
+            $date = ($dataScore->count() > 0) ? $dataScore[0]->updated_date : null;
             $hashddress = ($dataScore->count() > 0) ? $request->address : null;
             $data = Submission::with('user:id,first_name,last_name')->Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
+            // get userRep
+            $userRep = UserRep::Where('user_id', $userId)->first();
+            if($userRep->balance >= 2) {
+                UserRep::Where('user_id', $userId)
+                    ->update(['balance' => $userRep->balance - 2
+                    ]);
+
+                $submisson = Submission::Select('id')->Where('address', $request->address)->Where('approved', 1)
+                ->get()->toArray();
+
+                $scorePush = (2*0.8)/$submisson->count();
+
+                for($i = 0; $i < $submisson->count(); $i++) {
+                    $result = UserRep::where('user_id', $submisson[$i]['id'])->get();
+                    UserRep::Where('user_id', $submisson[$i]['id'])->update(['reps'=>$result->reps+1, 'balance'=>$result->balance+$scorePush]);
+                }
+
+                return response()->json(['status' => 200, 
+                'score' => $score,
+                'address' => $hashddress,
+                'data' => $data,
+                'updated_date' => $date, 
+                ]);
+            }
+            else {
+                return response()->json(['status' => 400], 400);
+            }
             return response()->json(['status' => 200, 
                 'score' => $score,
                 'address' => $hashddress,
@@ -97,7 +125,7 @@ class HomeController extends Controller
                 'updated_date' => $date, 
                 ]);
         }
-        return response()->json(['status' => 404]);
+        return response()->json(['status' => 404], 404);
     }
 
     /**
