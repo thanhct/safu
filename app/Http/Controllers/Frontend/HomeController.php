@@ -26,13 +26,14 @@ class HomeController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function submitAddress(Request $request){
-        if(!empty($request->address) && !empty(Auth::id())) {
+        $userId = $request->userId;
+        if(!empty($request->address) && !empty($userId)) {
             $hash_address = Address::Where('hash_address', $request->address)->get();
             if($hash_address->count() === 0) {
                 Address::create(['hash_address' => $request->address, 'score' => 0]);
             }
             $data = $request->all();
-            $data['user_id'] = Auth::id();
+            $data['user_id'] = $userId;
             Submission::create($data);
             if($request->approved === 1){
                 $score = Address::find($request->address)->score;
@@ -41,7 +42,7 @@ class HomeController extends Controller
                                 'updated_date' => date()
                                 ])
                         ->Where('hash_address', $request->address);
-                    $this->updateUserRep(Auth::id());
+                    $this->updateUserRep($userId);
                 }           
             }
             return response()->json(['status' => 201]);
@@ -77,6 +78,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function changeStatus(Request $request){
+        $userId = $request->userId;
         if(!empty($request->id)) {
             $submission = Submission::find($request->id);
             if($submission->approved === 0) {
@@ -88,11 +90,11 @@ class HomeController extends Controller
                         ->Where('hash_address', $request->address);
                     Submission::update([
                                         'approved' => 1,
-                                        'appr_user' => Auth::id(),
+                                        'appr_user' => $userId,
                                         'appr_date' => date()
                                         ])
                                 ->Where('id', $request->id);
-                    $this->updateUserRep(Auth::id());
+                    $this->updateUserRep($userId);
                 }
                 return response()->json(['status' => 200]);       
             }
