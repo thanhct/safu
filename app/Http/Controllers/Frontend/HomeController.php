@@ -54,10 +54,11 @@ class HomeController extends Controller
         $userId = $request->userId;
         if(!empty($request->address) && !empty($userId)) {
             $hash_address = Address::Where('hash_address', $request->address)->get();
-            $score = Address::find($request->address)->score;
+            
             if($hash_address->count() === 0) {
                 Address::create(['hash_address' => $request->address, 'score' => 1]);
             } else {
+                $score = Address::find($request->address)->score;
                 if($score !== 100) {
                     $this->updateAddress($request->address, $score);
                 }
@@ -66,6 +67,7 @@ class HomeController extends Controller
             $data['user_id'] = $userId;
             Submission::create($data);
             if($request->approved === 1){
+                $score = Address::find($request->address)->score;
                 if($score !== 100) {
                     $this->updateAddress($request->address, $score);
                     $this->updateUserRep($userId);
