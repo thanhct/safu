@@ -145,10 +145,6 @@
                                 <td><i id="updated_date" style="min-width: 400px;"></i></td>
                             </tr>
                             <tr>
-                                <th>Num Reports Submitted</th>
-                                <td id="address_score" style="min-width: 400px;"></td>
-                            </tr>
-                            <tr>
                                 <th>Platform fees</th>
                                 <td id="platform_fees" style="min-width: 400px;"></td>
                             </tr>
