@@ -93,19 +93,21 @@ class HomeController extends Controller
                 ->get()->toArray();
             // get userRep
             $userRep = UserRep::Where('user_id', $userId)->first();
-            if($userRep->balance >= 2) {
+            if($userRep->balance >= 0.002) {
+                // sub balance for each lookup
                 UserRep::Where('user_id', $userId)
-                    ->update(['balance' => $userRep->balance - 2
+                    ->update(['balance' => $userRep->balance - 0.002
                     ]);
-
-                $submisson = Submission::Select('id')->Where('address', $request->address)->Where('approved', 1)
+                // get all of userIds by address 
+                $submisson = Submission::Select('user_id')->Where('address', $request->address)->Where('approved', 1)
                 ->get()->toArray();
-
-                $scorePush = (2*0.8)/$submisson->count();
-
-                for($i = 0; $i < $submisson->count(); $i++) {
-                    $result = UserRep::where('user_id', $submisson[$i]['id'])->get();
-                    UserRep::Where('user_id', $submisson[$i]['id'])->update(['reps'=>$result->reps+1, 'balance'=>$result->balance+$scorePush]);
+                // calculate bonus score 
+                $scorePush = (0.002*0.8)/count($submisson);
+                // add bonus for each submission
+                for($i = 0; $i < count($submisson); $i++) {
+                    $result = UserRep::where('user_id', $submisson[$i]['user_id'])->first();
+                    if ($result)
+                    UserRep::Where('user_id', $submisson[$i]['user_id'])->update(['balance'=>$result->balance+$scorePush]);
                 }
 
                 return response()->json(['status' => 200, 
