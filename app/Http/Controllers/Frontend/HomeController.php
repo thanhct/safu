@@ -111,13 +111,13 @@ class HomeController extends Controller
                 $score = Address::find($request->address)->score;            
                 if($score !== 100) {
                     Address::update(['score' => $score + 1,
-                                'updated_date' => date()
+                                'updated_date' => now()
                                 ])
                         ->Where('hash_address', $request->address);
                     Submission::update([
                                         'approved' => 1,
                                         'appr_user' => $userId,
-                                        'appr_date' => date()
+                                        'appr_date' => now()
                                         ])
                                 ->Where('id', $request->id);
                     $this->updateUserRep($userId);
