@@ -72,7 +72,6 @@ class HomeController extends Controller
             $data = Submission::with('user:id,first_name,last_name')->Where('address', $request->address)
                 ->Where('approved', 1)
                 ->get()->toArray();
-            dd($data);
             return response()->json(['status' => 200, 
                 'score' => $score,
                 'address' => $request->address,

@@ -2,16 +2,28 @@
 
 @section('title', app_name() . ' | ' . __('navs.general.home'))
 
+@section('css')
+<style>
+    .table-hide {
+        display: none;
+    }
+</style>
+@endsection
+
 @section('js')
 <script>
-    // $('#modal_submit_address').modal('show');
+    $('#detect_address').keyup(function (e) {
+        if (e.keyCode == 13) {
+            $('#button_detect').trigger("click");
+        }
+    });
 
     $('#button_report').click(function () {
         $.ajax({
             url: "/api/report/submit",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#report_address').val(),
+                'address': $('#report_address').val().trim(),
                 'report': $('#report_comment').val()
             }),
             dataType: 'json',
@@ -30,15 +42,29 @@
             url: "/api/getLook",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#detect_address').val()
+                'address': $('#detect_address').val().trim()
             }),
             dataType: 'json',
             contentType: 'application/json',
-            success: function (data) {
-                console.log(JSON.stringify(data));
-                $('#lookup_address').text(data.address);
-                $('#address_score').text(data.score);
-                $('#updated_date').text(data.updated_date);
+            success: function (response) {
+                console.log(response);
+                $('#table_list_data').removeClass('table-hide');
+                var html = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    var item = response.data[i];
+                    html += `
+                        <tr>
+                            <th scope="row">${i}</th>
+                            <td>${item.user.full_name}</td>
+                            <td>${item.address}</td>
+                        </tr>
+                        `;
+                }
+                $('#table_list_data tbody').html(html);
+
+                $('#lookup_address').text(response.address);
+                $('#address_score').text(response.score);
+                $('#updated_date').text(response.updated_date);
             },
             error: function (request, status, error) {
                 debugger
@@ -69,22 +95,32 @@
                         <tbody>
                             <tr>
                                 <th>Address</th>
-                                <td><i id="lookup_address">38JZBto35r1upCZ23anoJQMibpdL7EBwaC</i></td>
+                                <td style="min-width: 400px;"><i id="lookup_address"></i></td>
                             </tr>
                             <tr>
                                 <th>Report Count</th>
-                                <td id="address_score">0</td>
+                                <td id="address_score" style="min-width: 400px;"></td>
                             </tr>
                             <tr>
                                 <th>Latest Report</th>
-                                <td><i id="updated_date"></i>—<br></td>
+                                <td><i id="updated_date" style="min-width: 400px;"></i></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="input-group mt-2 mb-3">
-                <button type="button" class="btn btn-info">View Info</button>
+                <table class="table table-dark table-hide" id="table_list_data">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

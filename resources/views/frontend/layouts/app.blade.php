@@ -21,6 +21,7 @@
         {{ style(mix('css/frontend.css')) }}
 
         @stack('after-styles')
+        @yield('css')
     </head>
     <body>
         <div id="app">
