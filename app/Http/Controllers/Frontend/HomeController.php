@@ -56,7 +56,7 @@ class HomeController extends Controller
             $hash_address = Address::Where('hash_address', $request->address)->get();
             $score = Address::find($request->address)->score;
             if($hash_address->count() === 0) {
-                Address::create(['hash_address' => $request->address, 'score' => 0]);
+                Address::create(['hash_address' => $request->address, 'score' => 1]);
             } else {
                 if($score !== 100) {
                     $this->updateAddress($request->address, $score);
