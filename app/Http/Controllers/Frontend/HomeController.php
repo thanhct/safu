@@ -97,6 +97,17 @@ class HomeController extends Controller
                 UserRep::Where('user_id', $userId)
                     ->update(['balance' => $userRep->balance - 2
                     ]);
+
+                $submisson = Submission::Select('id')->Where('address', $request->address)->Where('approved', 1)
+                ->get()->toArray();
+
+                $scorePush = (2*0.8)/$submisson->count();
+
+                for($i = 0; $i < $submisson->count(); $i++) {
+                    $result = UserRep::where('user_id', $submisson[$i]['id'])->get();
+                    UserRep::Where('user_id', $submisson[$i]['id'])->update(['reps'=>$result->reps+1, 'balance'=>$result->balance+$scorePush]);
+                }
+
                 return response()->json(['status' => 200, 
                 'score' => $score,
                 'address' => $hashddress,

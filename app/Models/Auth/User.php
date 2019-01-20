@@ -13,6 +13,7 @@ use App\Models\Auth\Traits\Attribute\UserAttribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
 use App\Models\System\Submission;
+use App\Models\System\User;
 
 /**
  * Class User.
@@ -80,5 +81,10 @@ class User extends Authenticatable
 
     public function user(){
         return $this->hasMany(Submission::class, 'user_id');
+    }
+
+    public function userrep()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
