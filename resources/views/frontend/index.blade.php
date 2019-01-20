@@ -24,11 +24,18 @@
     });
 
     $('#button_report').click(function () {
+        var address = $('#report_address').val().trim();
+        if (address.length < 2 || address.length > 100) {
+            $('#error_message').html('Address is invalid.');
+            $('#modal_submit_error').modal('show');
+            return false;
+        }
+
         $.ajax({
             url: "/api/report/submit",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#report_address').val().trim(),
+                'address': address,
                 'report': $('#report_comment').val(),
                 'userId': userId
             }),
@@ -44,11 +51,18 @@
     });
 
     $('#button_detect').click(function () {
+        var address = $('#detect_address').val().trim();
+        if (address.length < 2 || address.length > 100) {
+            $('#error_message').html('Address is invalid.');
+            $('#modal_submit_error').modal('show');
+            return false;
+        }
+
         $.ajax({
             url: "/api/getLook",
             type: "POST",
             data: JSON.stringify({
-                'address': $('#detect_address').val().trim(),
+                'address': address,
                 'userId': userId
             }),
             dataType: 'json',
@@ -179,6 +193,25 @@
             </div>
             <div class="modal-body">
                 <p>Report Successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal_submit_error">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="error_message"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
