@@ -88,7 +88,8 @@
                 $('#table_list_data tbody').html(html);
 
                 $('#lookup_address').text(response.address);
-                $('#address_score').text(response.score);
+                $('#address_count').text(response.score);
+                $('#score').text(Math.ceil(Math.min(Math.log(response.score + 1) * 100 / 2.5, 100)));
                 $('#updated_date').text(response.updated_date);
             },
             error: function (request, status, error) {
@@ -130,7 +131,11 @@
                             </tr>
                             <tr>
                                 <th>Report Count</th>
-                                <td id="address_score" style="min-width: 400px;"></td>
+                                <td id="address_count" style="min-width: 400px;"></td>
+                            </tr>
+                            <tr>
+                                <th>Score</th>
+                                <td id="score" style="min-width: 400px;"></td>
                             </tr>
                             <tr>
                                 <th>Latest Report</th>
