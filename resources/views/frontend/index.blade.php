@@ -38,6 +38,7 @@
                 console.log(JSON.stringify(data));
                 $('#lookup_address').text(data.address);
                 $('#address_score').text(data.score);
+                $('#updated_date').text(data.updated_date);
             },
             error: function (request, status, error) {
                 debugger
@@ -76,11 +77,10 @@
                             </tr>
                             <tr>
                                 <th>Latest Report</th>
-                                <td>—<br></td>
+                                <td><i id="updated_date"></i>—<br></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p class="mb-0"><i>This address has not been reported</i>. <a href="/reports/create?address=38JZBto35r1upCZ23anoJQMibpdL7EBwaC">File Report</a></p>
                 </div>
             </div>
             <div class="input-group mt-2 mb-3">
