@@ -129,12 +129,24 @@
                                 <td style="min-width: 400px;"><i id="lookup_address"></i></td>
                             </tr>
                             <tr>
-                                <th>Report Count</th>
+                                <th>Score</th>
                                 <td id="address_score" style="min-width: 400px;"></td>
                             </tr>
                             <tr>
                                 <th>Latest Report</th>
                                 <td><i id="updated_date" style="min-width: 400px;"></i></td>
+                            </tr>
+                            <tr>
+                                <th>Num Reports Submitted</th>
+                                <td id="address_score" style="min-width: 400px;"></td>
+                            </tr>
+                            <tr>
+                                <th>Platform fees</th>
+                                <td id="address_score" style="min-width: 400px;"></td>
+                            </tr>
+                            <tr>
+                                <th>Total fees</th>
+                                <td id="address_score" style="min-width: 400px;"></td>
                             </tr>
                         </tbody>
                     </table>
